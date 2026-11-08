@@ -1,0 +1,375 @@
+/* @josuehcmz/ui · estilos del Portal HCMZ (tokens + tema Tailwind v4 + base).
+   En el globals.css del módulo:
+
+     @import "@josuehcmz/ui/estilos.css";
+     :root { --acento: …; --acento-tinta: …; --acento-bg: …; }          (el de su tarjeta del portal)
+     [data-tema="oscuro"] { --acento: …; --acento-tinta: …; --acento-bg: …; }
+
+   No se extiende la paleta de Tailwind: se reemplaza. Si en una clase aparece un hex o un color de
+   Tailwind, es un bug (por eso --color-* se vacía). */
+
+@import "./tokens.css";
+@import "./fuentes.css";
+@import "tailwindcss";
+
+/* Tailwind tiene que ver las clases de los componentes del paquete (están en node_modules, que no escanea solo). */
+@source "../src";
+
+@custom-variant dark (&:where([data-tema="oscuro"], [data-tema="oscuro"] *));
+
+/* Acento por omisión: NEUTRO (el portal no tiene color propio). Cada módulo lo pisa con el de su tarjeta,
+   DESPUÉS del @import; el verde pino es solo de WhatsApp. */
+:root {
+  --acento: var(--tinta-2);
+  --acento-tinta: var(--tinta-2);
+  --acento-bg: var(--piedra-hundida);
+  --serie-1: #2f5f94;
+  --serie-2: #b4591f;
+  --serie-3: #1f7a5a;
+  --serie-4: #7a4fa0;
+  --serie-5: #8a6d00;
+  --serie-6: #9a3560;
+}
+
+[data-tema="oscuro"] {
+  --acento: var(--tinta-2);
+  --acento-tinta: var(--tinta-2);
+  --acento-bg: var(--piedra-hundida);
+  --serie-1: #8fb4e0;
+  --serie-2: #f0a26e;
+  --serie-3: #6fd0a8;
+  --serie-4: #c3a1e6;
+  --serie-5: #e6c85a;
+  --serie-6: #eb90b5;
+}
+
+/* Piezas que venían de WhatsApp (diálogos, perilla del interruptor, burbujas) + tokens que agregó el
+   design system (Claude Design, 4-nov): acento de WhatsApp, tinta fija y color de foco. */
+:root {
+  --blanco: #ffffff;
+  --velo-dialogo: rgba(32, 40, 38, 0.32);
+  --modulo-whatsapp: #1f7a5a;
+  --modulo-whatsapp-tinta: #17664b;
+  --modulo-whatsapp-fondo: rgba(31, 122, 90, 0.1);
+  --burbuja-propia: #e3f1ea;
+  /* Texto oscuro sobre ámbar u otro hex sólido: igual en los dos temas. */
+  --tinta-fija: #202826;
+  /* Definido para el design system; el foco de los módulos sigue siendo var(--tinta) (decisión 4-nov). */
+  --foco: #8fb0e8;
+  /* Nómina IGSS (verde) y vínculo Nómina↔Resultados («En Nómina», verde azulado). Ronda 4. */
+  --modulo-nomina: #157f3c;
+  --modulo-nomina-tinta: #106531;
+  --modulo-nomina-fondo: rgba(21, 127, 60, 0.1);
+  --vinculo-nomina: #0e7490;
+  --vinculo-nomina-tinta: #0b5d74;
+  --vinculo-nomina-fondo: rgba(14, 116, 144, 0.1);
+  /* Marca del membrete: FIJOS en los dos temas (es papel). Ronda 5. */
+  --marca-marino: #121127;
+  --marca-marino-medio: #161638;
+  --marca-marino-claro: #1d2154;
+  --marca-pie-medio: #16173a;
+  --marca-pie-claro: #1b1e4c;
+  --marca-turquesa: #1b8c86;
+  --marca-turquesa-claro: #22a48d;
+  --marca-turquesa-medio: #1f9a87;
+}
+
+[data-tema="oscuro"] {
+  --velo-dialogo: rgba(0, 0, 0, 0.55);
+  --modulo-whatsapp: #6fd0a8;
+  --modulo-whatsapp-tinta: #6fd0a8;
+  --modulo-whatsapp-fondo: rgba(111, 208, 168, 0.15);
+  --burbuja-propia: #1f3a30;
+  --modulo-nomina: #6fd08f;
+  --modulo-nomina-tinta: #6fd08f;
+  --modulo-nomina-fondo: rgba(111, 208, 143, 0.22);
+  --vinculo-nomina: #5ec8e0;
+  --vinculo-nomina-tinta: #5ec8e0;
+  --vinculo-nomina-fondo: rgba(94, 200, 224, 0.22);
+}
+
+[data-modulo="nomina"] {
+  --acento: var(--modulo-nomina);
+  --acento-tinta: var(--modulo-nomina-tinta);
+  --acento-bg: var(--modulo-nomina-fondo);
+}
+
+/* Variables propias del portal que el tokens.css no trae porque no eran color
+   de marca: el fondo de los controles y las sombras, que cambian de tema. */
+:root {
+  --control-bg: #ffffff;
+  --velo: rgba(32, 40, 38, 0.42);
+  --relleno-punteado: rgba(255, 255, 255, 0.4);
+  --esqueleto: #f2f0eb;
+  --sobre-tinta: #ffffff;
+  --punto-aldia: #0ca30c;
+  --sombra-plana: 0 1px 2px rgba(32, 40, 38, 0.05);
+  --sombra-tarjeta: 0 1px 3px rgba(32, 40, 38, 0.08), 0 8px 24px rgba(32, 40, 38, 0.06);
+  --sombra-menu: 0 12px 32px rgba(32, 40, 38, 0.16);
+  --sombra-dialogo: 0 20px 48px rgba(32, 40, 38, 0.26);
+  --sombra-segmento: 0 1px 2px rgba(32, 40, 38, 0.08);
+  --sombra-caja: 0 2px 8px rgba(32, 40, 38, 0.06);
+  /* Tinta sobre el hex sólido de un estado (contadores): no cambia con el tema. */
+  --sobre-porvencer: #202826;
+  --sobre-estado: #ffffff;
+}
+
+[data-tema="oscuro"] {
+  --control-bg: #2b2926;
+  --velo: rgba(0, 0, 0, 0.6);
+  --relleno-punteado: transparent;
+  --esqueleto: #2f2c29;
+  --sobre-tinta: #1a1917;
+  --punto-aldia: #57c957;
+  --sombra-plana: none;
+  --sombra-tarjeta: 0 1px 3px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.24);
+  --sombra-menu: 0 12px 32px rgba(0, 0, 0, 0.4);
+  --sombra-dialogo: 0 20px 48px rgba(0, 0, 0, 0.5);
+  --sombra-segmento: none;
+  --sombra-caja: none;
+}
+
+@theme inline {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --color-lienzo: var(--piedra-lienzo);
+  --color-pagina: var(--piedra-pagina);
+  --color-tarjeta: var(--piedra-tarjeta);
+  --color-sutil: var(--piedra-sutil);
+  --color-hundida: var(--piedra-hundida);
+  --color-divisor: var(--piedra-divisor);
+  --color-control: var(--control-bg);
+  --color-velo: var(--velo);
+  --color-punteado: var(--relleno-punteado);
+  --color-esqueleto: var(--esqueleto);
+  --color-sobre-tinta: var(--sobre-tinta);
+  --color-punto-aldia: var(--punto-aldia);
+  --color-sobre-porvencer: var(--sobre-porvencer);
+  --color-sobre-estado: var(--sobre-estado);
+  --color-blanco: var(--blanco);
+  --color-velo-dialogo: var(--velo-dialogo);
+  --color-whatsapp: var(--modulo-whatsapp);
+  --color-whatsapp-tinta: var(--modulo-whatsapp-tinta);
+  --color-whatsapp-bg: var(--modulo-whatsapp-fondo);
+  --color-burbuja-propia: var(--burbuja-propia);
+  --color-tinta-fija: var(--tinta-fija);
+  --color-nomina: var(--modulo-nomina);
+  --color-nomina-tinta: var(--modulo-nomina-tinta);
+  --color-nomina-bg: var(--modulo-nomina-fondo);
+  --color-vinculo: var(--vinculo-nomina);
+  --color-vinculo-tinta: var(--vinculo-nomina-tinta);
+  --color-vinculo-bg: var(--vinculo-nomina-fondo);
+  --color-marca-marino: var(--marca-marino);
+  --color-marca-marino-medio: var(--marca-marino-medio);
+  --color-marca-marino-claro: var(--marca-marino-claro);
+  --color-marca-pie-medio: var(--marca-pie-medio);
+  --color-marca-pie-claro: var(--marca-pie-claro);
+  --color-marca-turquesa: var(--marca-turquesa);
+  --color-marca-turquesa-claro: var(--marca-turquesa-claro);
+  --color-marca-turquesa-medio: var(--marca-turquesa-medio);
+  --color-foco: var(--foco);
+  --color-serie-1: var(--serie-1);
+  --color-serie-2: var(--serie-2);
+  --color-serie-3: var(--serie-3);
+  --color-serie-4: var(--serie-4);
+  --color-serie-5: var(--serie-5);
+  --color-serie-6: var(--serie-6);
+
+  /* Acento del módulo en curso: lo fija estiloAcento() en runtime desde el catálogo. */
+  --color-acento: var(--acento);
+  --color-acento-tinta: var(--acento-tinta);
+  --color-acento-bg: var(--acento-bg);
+
+  --color-borde-sutil: var(--borde-sutil);
+  --color-borde: var(--borde-medio);
+  --color-borde-fuerte: var(--borde-fuerte);
+
+  --color-tinta: var(--tinta);
+  --color-tinta-2: var(--tinta-2);
+  --color-tinta-3: var(--tinta-3);
+  --color-tinta-apoyo: var(--tinta-apoyo);
+
+  --color-starlink: var(--starlink);
+  --color-starlink-tinta: var(--starlink-tinta);
+  --color-starlink-bg: var(--starlink-bg);
+  --color-netflix: var(--netflix);
+  --color-netflix-tinta: var(--netflix-tinta);
+  --color-netflix-bg: var(--netflix-bg);
+
+  --color-suspendido: var(--suspendido);
+  --color-suspendido-tinta: var(--suspendido-tinta);
+  --color-suspendido-bg: var(--suspendido-bg);
+  --color-fallo: var(--fallo);
+  --color-fallo-tinta: var(--fallo-tinta);
+  --color-fallo-bg: var(--fallo-bg);
+  --color-porvencer: var(--porvencer);
+  --color-porvencer-tinta: var(--porvencer-tinta);
+  --color-porvencer-bg: var(--porvencer-bg);
+  --color-aldia: var(--aldia);
+  --color-aldia-tinta: var(--aldia-tinta);
+  --color-aldia-bg: var(--aldia-bg);
+  --color-sindatos: var(--sindatos);
+  --color-sindatos-tinta: var(--sindatos-tinta);
+  --color-sindatos-bg: var(--sindatos-bg);
+
+  --font-display: var(--font-sora), system-ui, sans-serif;
+  --font-sans: var(--font-plex-sans), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  /* Solo membrete y pie de hojas impresas; no es fuente de interfaz. */
+  --font-marca: var(--font-josefin), "Century Gothic", sans-serif;
+
+  --text-*: initial;
+  --text-etiqueta: 11px;
+  --text-etiqueta--line-height: 1.3;
+  --text-etiqueta--letter-spacing: 0.12em;
+  --text-mini: 12px;
+  --text-mini--line-height: 1.45;
+  --text-apoyo: 12.5px;
+  --text-apoyo--line-height: 1.5;
+  --text-ui: 13px;
+  --text-ui--line-height: 1.5;
+  --text-ui-lg: 13.5px;
+  --text-ui-lg--line-height: 1.55;
+  --text-cuerpo: 14px;
+  --text-cuerpo--line-height: 1.6;
+  --text-cuerpo-lg: 14.5px;
+  --text-cuerpo-lg--line-height: 1.6;
+  --text-titulo-tarjeta: 16px;
+  --text-titulo-tarjeta--line-height: 1.4;
+  --text-titulo-tarjeta--letter-spacing: -0.01em;
+  --text-modulo: 17px;
+  --text-modulo--line-height: 1.35;
+  --text-modulo--letter-spacing: -0.01em;
+  --text-dialogo: 19px;
+  --text-dialogo--line-height: 1.3;
+  --text-dialogo--letter-spacing: -0.01em;
+  --text-seccion: 26px;
+  --text-seccion--line-height: 1.15;
+  --text-seccion--letter-spacing: -0.02em;
+  --text-saludo: 29px;
+  --text-saludo--line-height: 1.15;
+  --text-saludo--letter-spacing: -0.02em;
+
+  --radius-*: initial;
+  --radius-chip: 7px;
+  --radius-control: 9px;
+  --radius-panel: 12px;
+  --radius-tarjeta: 14px;
+  --radius-modulo: 16px;
+  --radius-movil: 22px;
+  --radius-pildora: 999px;
+  --radius-hero: 18px;
+  --radius-equipo: 20px;
+
+  --shadow-*: initial;
+  --shadow-plana: var(--sombra-plana);
+  --shadow-tarjeta: var(--sombra-tarjeta);
+  --shadow-menu: var(--sombra-menu);
+  --shadow-dialogo: var(--sombra-dialogo);
+  --shadow-segmento: var(--sombra-segmento);
+  --shadow-caja: var(--sombra-caja);
+
+  --ease-estandar: cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+/* Reglas base DENTRO de @layer base: las sin capa ganan a cualquier utilidad de
+   Tailwind (un `a {color: inherit}` suelto anula `text-sobre-tinta`, y el `*`
+   de border-color anula `border-suspendido/30`). */
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--borde-sutil);
+  }
+
+  html {
+    background: var(--piedra-pagina);
+  }
+
+  body {
+    margin: 0;
+    background: var(--piedra-pagina);
+    color: var(--tinta);
+    font-family: var(--font-plex-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--tinta);
+    outline-offset: 2px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font-family: inherit;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Impresión: solo lo que va en papel. */
+@media print {
+  .noprint {
+    display: none !important;
+  }
+  html,
+  body {
+    background: #ffffff !important;
+  }
+  #contenido {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+}
+
+/* Scroll de WhatsApp (rediseño v4): barra delgada en escritorio, sin barras en el teléfono. */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--borde-fuerte) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-track,
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--borde-fuerte);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: var(--tinta-3);
+  }
+  @media (pointer: coarse) {
+    * {
+      scrollbar-width: none;
+    }
+    *::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+/* Para tiras horizontales (filtros, pestañas): desliza sin mostrar barra. */
+@utility sin-barra {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -1,0 +1,60 @@
+/* Las tres familias del Portal, servidas desde el propio módulo (Next copia los .woff2 al build).
+   Nunca se piden a Google: el módulo compila y se ve igual sin internet. */
+
+@font-face {
+  font-family: "Sora";
+  src: url("../fuentes/sora-latin.woff2") format("woff2");
+  font-weight: 300 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("../fuentes/plex-sans-latin.woff2") format("woff2");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../fuentes/plex-mono-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../fuentes/plex-mono-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fuente de marca (membrete y pie de hojas impresas). OFL, subconjunto latin, ~12 KB c/u.
+   Solo se descarga si una página la usa (font-marca). */
+@font-face {
+  font-family: "Josefin Sans";
+  src: url("../fuentes/josefin-sans-300.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Josefin Sans";
+  src: url("../fuentes/josefin-sans-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Mismos nombres de variable que usaban los módulos con next/font, para no tocar clases. */
+:root {
+  --font-sora: "Sora";
+  --font-plex-sans: "IBM Plex Sans";
+  --font-plex-mono: "IBM Plex Mono";
+  --font-josefin: "Josefin Sans";
+}

@@ -1,0 +1,95 @@
+/* Portal HCMZ · tokens
+   Se importan una vez en app/globals.css, antes de las directivas de Tailwind.
+
+   El modo oscuro va por atributo, no por clase: [data-tema="oscuro"] en <html>.
+   Si preferís la clase 'dark' de Tailwind, cambiá el selector acá y el
+   darkMode del config — pero mantené UN solo mecanismo. */
+
+:root {
+  /* ── Neutros cálidos · "piedra" ──────────────────────────────────────
+     No son grises neutros ni azulados: llevan amarillo en la mezcla. Es lo
+     que hace que el portal se sienta institucional y no corporativo. */
+  --piedra-lienzo: #eceae4;   /* fondo del canvas, fuera de la app */
+  --piedra-pagina: #f7f6f2;   /* fondo de la aplicación */
+  --piedra-tarjeta: #ffffff;
+  --piedra-sutil: #faf9f6;    /* fila resaltada, pie de tarjeta */
+  --piedra-hundida: #eeece7;  /* avatares, chips inactivos, íconos */
+  --piedra-divisor: #f0eee9;  /* separadores dentro de una tarjeta */
+
+  --borde-sutil: #e4e1da;
+  --borde-medio: #d9d5cc;
+  --borde-fuerte: #d0ccc2;
+
+  /* ── Rampa de tinta · cuatro escalones, todos medidos ────────────────
+     Ninguno por encima de --tinta-apoyo puede tocar texto: #676F6C es el
+     más claro que todavía pasa 4.5:1 sobre --piedra-pagina, que es el
+     fondo más claro donde se usa. */
+  --tinta: #202826;           /* 13.9:1 sobre página */
+  --tinta-2: #4a5350;         /*  7.4:1 */
+  --tinta-3: #5c6663;         /*  5.5:1 */
+  --tinta-apoyo: #676f6c;     /*  4.7:1 — el piso */
+
+  /* ── Acentos de módulo ───────────────────────────────────────────────
+     El portal es acromático; el color pertenece a los módulos. Cada uno
+     trae su par: -tinta para texto sobre fondo al 10 %, -bg para ese fondo.
+
+     starlink-tinta es #117381 y no el #1793A3 de marca: la fila resaltada
+     de la tabla lleva --piedra-sutil, y al componer el fondo del chip al
+     10 % encima, #127886 caía a 4.40:1. Calibrado contra el fondo MÁS
+     OSCURO donde aparece, no contra blanco. */
+  --starlink: #1793a3;
+  --starlink-tinta: #117381;
+  --starlink-bg: rgba(23, 147, 163, .10);
+
+  --netflix: #003088;
+  --netflix-tinta: #003088;
+  --netflix-bg: rgba(0, 48, 136, .08);
+
+  /* ── Estados · VALIDADOS PARA DALTONISMO ─────────────────────────────
+     Los mismos cinco hex de Starlink y Netflix. No se cambian sin
+     re-validar los cinco juntos. Van SIEMPRE con ícono y texto. */
+  --suspendido: #d03b3b;   --suspendido-tinta: #a32222;   --suspendido-bg: rgba(208, 59, 59, .09);
+  --fallo: #ec835a;        --fallo-tinta: #a94a1c;        --fallo-bg: rgba(236, 131, 90, .12);
+  --porvencer: #fab219;    --porvencer-tinta: #7d5600;    --porvencer-bg: rgba(250, 178, 25, .14);
+  --aldia: #0ca30c;        --aldia-tinta: #077507;        --aldia-bg: rgba(12, 163, 12, .10);
+  --sindatos: #898781;     --sindatos-tinta: #5f5d58;     --sindatos-bg: rgba(137, 135, 129, .10);
+}
+
+[data-tema="oscuro"] {
+  /* Neutros cálidos también acá: el portal en oscuro sigue siendo el mismo
+     portal. #1A1917 tiene amarillo en la mezcla, no azul. */
+  --piedra-lienzo: #141312;
+  --piedra-pagina: #1a1917;
+  --piedra-tarjeta: #232220;
+  --piedra-sutil: #252422;
+  --piedra-hundida: #2b2926;
+  --piedra-divisor: #2f2c29;
+
+  --borde-sutil: #35322e;
+  --borde-medio: #3c3833;
+  --borde-fuerte: #46423c;
+
+  --tinta: #edeae4;
+  --tinta-2: #b4afa6;
+  --tinta-3: #96918a;
+  --tinta-apoyo: #96918a;     /* en oscuro solo hay dos tintas de apoyo */
+
+  /* Los acentos SUBEN de luminosidad. El marino #003088 sobre la tarjeta
+     oscura da 1.4:1 y desaparece; #7FA6E8 es el mismo valor que la app de
+     Netflix ya usa en su barra oscura. */
+  --starlink: #4fc0cd;
+  --starlink-tinta: #4fc0cd;
+  --starlink-bg: rgba(79, 192, 205, .14);
+
+  --netflix: #7fa6e8;
+  --netflix-tinta: #7fa6e8;
+  --netflix-bg: rgba(127, 166, 232, .15);
+
+  /* Los cinco hex de estado NO cambian. Sube el fondo a 18 % y se aclara
+     la tinta, que es lo que el fondo oscuro exige. */
+  --suspendido-tinta: #f0908f;   --suspendido-bg: rgba(208, 59, 59, .18);
+  --fallo-tinta: #f4a985;        --fallo-bg: rgba(236, 131, 90, .18);
+  --porvencer-tinta: #f6c760;    --porvencer-bg: rgba(250, 178, 25, .18);
+  --aldia-tinta: #57c957;        --aldia-bg: rgba(12, 163, 12, .18);
+  --sindatos-tinta: #aeb4b0;     --sindatos-bg: rgba(137, 135, 129, .20);
+}
