@@ -6,7 +6,7 @@ import { useEffect } from "react";
    repetir el mismo mensaje. Se ignora el ruido que no es del módulo (extensiones, «Script error.», ResizeObserver).
    Además mide el rendimiento real de esta carga de página (Web Vitals) y lo manda UNA vez, al ocultar o cerrar la
    pestaña, por la misma ruta (→ pestaña Rendimiento del Monitor). Solo ruta genérica y tiempos: nada de quién.
-   Vive SOLO en @josuehcmz/ui: los módulos lo importan, no lo copian. */
+   Vive SOLO en @j3ehcmz/ui: los módulos lo importan, no lo copian. */
 
 function enviar(cuerpo: string) {
   if (!navigator.sendBeacon?.("/api/errores", new Blob([cuerpo], { type: "application/json" }))) {

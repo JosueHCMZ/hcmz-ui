@@ -1,6 +1,6 @@
 {
-  "name": "@josuehcmz/ui",
-  "version": "0.1.1",
+  "name": "@j3ehcmz/ui",
+  "version": "0.1.2",
   "description": "Sistema de diseño de los módulos del Portal HCMZ: tokens, tema Tailwind v4, barra de módulo y componentes.",
   "type": "module",
   "sideEffects": [
@@ -33,5 +33,13 @@
     "next": "16.4.3",
     "react": "19.2.8",
     "typescript": "^5.9.0"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JosueHCMZ/hcmz-ui.git"
+  },
+  "license": "UNLICENSED"
 }

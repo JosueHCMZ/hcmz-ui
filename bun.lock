@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "@josuehcmz/ui",
+      "name": "@j3ehcmz/ui",
       "devDependencies": {
         "@types/node": "^20",
         "@types/react": "^19",

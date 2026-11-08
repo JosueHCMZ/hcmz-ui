@@ -1,4 +1,4 @@
-# Migrar un módulo a @josuehcmz/ui
+# Migrar un módulo a @j3ehcmz/ui
 
 Receta sacada de los pilotos (ideas-hcmz y monitor-hcmz, 8-nov-2026). El objetivo: el módulo deja de tener
 su propia copia del sistema de diseño y usa el paquete. **Mismo comportamiento, mismos textos, misma lógica.**
@@ -11,19 +11,19 @@ Nada de rediseños escondidos.
 ## 1 · Dependencia
 ```jsonc
 // package.json → dependencies
-"@josuehcmz/ui": "github:JosueHCMZ/hcmz-ui#v0.1.1"
+"@j3ehcmz/ui": "^0.1.2"        // desde npm (org j3ehcmz)
 ```
-`bun install` (genera `bun.lock`). En `next.config.ts`: `transpilePackages: ["@josuehcmz/ui"]`.
+`bun install` (genera `bun.lock`). En `next.config.ts`: `transpilePackages: ["@j3ehcmz/ui"]`.
 
 ## 2 · Lo que se BORRA del módulo (si existe y es la copia del portal)
 | Archivo del módulo | Ahora viene de |
 |---|---|
-| `app/tokens.css`, el `@theme` de `app/globals.css` | `@import "@josuehcmz/ui/estilos.css";` (reemplaza `@import "tailwindcss"` y `@import "./tokens.css"`) |
+| `app/tokens.css`, el `@theme` de `app/globals.css` | `@import "@j3ehcmz/ui/estilos.css";` (reemplaza `@import "tailwindcss"` y `@import "./tokens.css"`) |
 | `app/fonts/*.woff2` + `localFont(...)` en `layout.tsx` | el paquete (fuentes locales) |
 | `app/transicion-portal.ts` + script del tema en `<head>` | `<ScriptsCabecera />` dentro de `<head>` |
-| `components/reportar-errores.tsx` | `import { ReportarErrores, reportarErrorNavegador } from "@josuehcmz/ui"` |
+| `components/reportar-errores.tsx` | `import { ReportarErrores, reportarErrorNavegador } from "@j3ehcmz/ui"` |
 | `components/shell/Shell.tsx`, `BotonTema.tsx`, `ui/Monograma.tsx` | `Shell` del paquete (props: `modulo={{id, nombre, icono}}`, `persona`, `textoSoloLectura`, `navegacion`, `extras`) |
-| `components/ui/estilos.ts` (clases `BTN`, `INPUT`…) | `import { BTN, INPUT, SELECT, … } from "@josuehcmz/ui"` |
+| `components/ui/estilos.ts` (clases `BTN`, `INPUT`…) | `import { BTN, INPUT, SELECT, … } from "@j3ehcmz/ui"` |
 
 En `globals.css` queda SOLO lo propio del módulo: el acento (`--acento`, `--acento-tinta`, `--acento-bg` en
 `:root` y en `[data-tema="oscuro"]`) y estilos que de verdad son de ese módulo. Si el módulo tenía un token o
@@ -56,5 +56,5 @@ Mirar «antes» y «después» con Read: se tienen que ver iguales (o mejor). De
 Revertir `AGENTS.md` si `next dev` lo regeneró (`git checkout AGENTS.md`).
 
 ## 5 · Commit
-En la rama `ui-compartida`, un commit: `Usar @josuehcmz/ui (tokens, fuentes, Shell y componentes del paquete)`.
+En la rama `ui-compartida`, un commit: `Usar @j3ehcmz/ui (tokens, fuentes, Shell y componentes del paquete)`.
 No se fusiona ni se sube a `master` sin revisión.

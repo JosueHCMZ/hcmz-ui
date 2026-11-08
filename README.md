@@ -1,4 +1,4 @@
-# @josuehcmz/ui — UI-HCMZ
+# @j3ehcmz/ui — UI-HCMZ
 
 Sistema de diseño compartido de los módulos del Portal HCMZ (Next 16 + Tailwind v4). Un cambio aquí llega a todos los módulos al subir la versión (Renovate).
 
@@ -7,15 +7,15 @@ Sistema de diseño compartido de los módulos del Portal HCMZ (Next 16 + Tailwin
 ## Usar en un módulo
 
 ```bash
-bun add @josuehcmz/ui
+bun add @j3ehcmz/ui
 ```
 
-`next.config.ts`: `transpilePackages: ["@josuehcmz/ui"]` (se publica como TypeScript).
+`next.config.ts`: `transpilePackages: ["@j3ehcmz/ui"]` (se publica como TypeScript).
 
 `app/globals.css` — solo el acento del módulo (el de su tarjeta del portal):
 
 ```css
-@import "@josuehcmz/ui/estilos.css";
+@import "@j3ehcmz/ui/estilos.css";
 :root { --acento: …; --acento-tinta: …; --acento-bg: …; }
 [data-tema="oscuro"] { --acento: …; --acento-tinta: …; --acento-bg: …; }
 ```
@@ -23,7 +23,7 @@ bun add @josuehcmz/ui
 `app/layout.tsx`:
 
 ```tsx
-import { ReportarErrores, ScriptsCabecera, Shell } from "@josuehcmz/ui";
+import { ReportarErrores, ScriptsCabecera, Shell } from "@j3ehcmz/ui";
 <html lang="es" suppressHydrationWarning>
   <head><ScriptsCabecera /></head>
   <body className="min-h-screen bg-pagina font-sans text-tinta">
@@ -43,7 +43,7 @@ Se borran del módulo: `app/tokens.css`, `app/fonts/`, `app/transicion-portal.ts
 - **Tokens extra** (ronda 4–6): Nómina (`nomina`, `[data-modulo="nomina"]`), vínculo «En Nómina» (`vinculo`), marca del membrete (`marca-*`, fijos en los dos temas) y `font-marca` (Josefin Sans local, solo membrete).
 - `Boton`: altos 32–42 (38/40/42 = los del portal) y `href` → se dibuja como enlace.
 
-Íconos: se pasan como componente de lucide-react importado por nombre (`icono={Plus}`). El registro completo del portal (319, con alias como `starlink` → `satellite-dish`) está aparte en `@josuehcmz/ui/iconos`, para usar solo donde los nombres vienen de datos.
+Íconos: se pasan como componente de lucide-react importado por nombre (`icono={Plus}`). El registro completo del portal (319, con alias como `starlink` → `satellite-dish`) está aparte en `@j3ehcmz/ui/iconos`, para usar solo donde los nombres vienen de datos.
 
 Pendiente de portar cuando se migre cada módulo (están en Claude Design, `CAMBIOS-PAQUETE.md`): componentes del portal (BarraPortal con container queries, BuscadorRapido, MenuPerfil, Insignia, TarjetaModulo…) y los de Nómina/Resultados (HojaNomina con membrete, FranjaNomina, TablaOrdenes…).
 

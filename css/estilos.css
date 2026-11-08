@@ -1,7 +1,7 @@
-/* @josuehcmz/ui · estilos del Portal HCMZ (tokens + tema Tailwind v4 + base).
+/* @j3ehcmz/ui · estilos del Portal HCMZ (tokens + tema Tailwind v4 + base).
    En el globals.css del módulo:
 
-     @import "@josuehcmz/ui/estilos.css";
+     @import "@j3ehcmz/ui/estilos.css";
      :root { --acento: …; --acento-tinta: …; --acento-bg: …; }          (el de su tarjeta del portal)
      [data-tema="oscuro"] { --acento: …; --acento-tinta: …; --acento-bg: …; }
 

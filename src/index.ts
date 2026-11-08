@@ -1,5 +1,5 @@
-// @josuehcmz/ui — sistema de diseño de los módulos del Portal HCMZ.
-// Estilos: @import "@josuehcmz/ui/estilos.css" en el globals.css del módulo.
+// @j3ehcmz/ui — sistema de diseño de los módulos del Portal HCMZ.
+// Estilos: @import "@j3ehcmz/ui/estilos.css" en el globals.css del módulo.
 
 export { Shell, Monograma, type Modulo } from "./shell/Shell";
 export { BotonPortal, DivisorCabecera, URL_PORTAL } from "./shell/BotonPortal";
