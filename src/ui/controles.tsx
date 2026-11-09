@@ -1,6 +1,7 @@
 "use client";
 
 import type { LucideIcon } from "lucide-react";
+import Link from "next/link";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 
 /* Piezas del sistema de diseño con los valores del rediseño v4 de WhatsApp (el más pulido).
@@ -137,7 +138,9 @@ export function FilaInterruptor({
   );
 }
 
-/** Control segmentado: fondo hundida, la opción activa en tarjeta con sombra mínima. */
+/** Control segmentado: fondo hundida, la opción activa en tarjeta con sombra mínima.
+ *  Con `href` en las opciones se dibuja como navegación (enlaces de next/link con aria-current) en vez de pestañas;
+ *  sirve para filtros que viven en la URL (?estado=…) y funcionan sin JS. */
 export function Segmentado<T extends string>({
   opciones,
   valor,
@@ -148,9 +151,10 @@ export function Segmentado<T extends string>({
   colorActivo,
   className = "",
 }: {
-  opciones: { v: T; txt: ReactNode; disabled?: boolean }[];
+  opciones: { v: T; txt: ReactNode; disabled?: boolean; href?: string }[];
   valor: T;
-  elegir: (v: T) => void;
+  /** Obligatorio salvo que todas las opciones tengan `href`. */
+  elegir?: (v: T) => void;
   /** Nombre accesible del grupo. */
   etiqueta: string;
   alto?: 30 | 32 | 34;
@@ -160,8 +164,37 @@ export function Segmentado<T extends string>({
   className?: string;
 }) {
   const h = { 30: "h-[30px]", 32: "h-8", 34: "h-[34px]" }[alto];
+  const enlaces = opciones.some((o) => o.href !== undefined);
+  const caja = `flex rounded-[10px] bg-hundida p-[3px] ${className}`;
+  const clase = (on: boolean, v: T) =>
+    `${h} cursor-pointer whitespace-nowrap rounded-[8px] font-medium disabled:cursor-default disabled:opacity-45 ${
+      ancho === "igual" ? "flex-1" : alto === 34 ? "px-4" : "px-3"
+    } ${alto === 34 ? "text-[13.5px]" : "text-[13px]"} ${on ? `bg-tarjeta shadow-plana ${colorActivo?.(v) ?? "text-tinta"}` : "bg-transparent text-tinta-3"}`;
+
+  if (enlaces) {
+    return (
+      <nav aria-label={etiqueta} className={caja}>
+        {opciones.map((o) => {
+          const on = o.v === valor;
+          const c = `${clase(on, o.v)} inline-flex items-center justify-center no-underline`;
+          if (o.href === undefined || o.disabled)
+            return (
+              <span key={o.v} aria-disabled={o.disabled || undefined} aria-current={on ? "page" : undefined} className={`${c} ${o.disabled ? "cursor-default opacity-45" : ""}`}>
+                {o.txt}
+              </span>
+            );
+          return (
+            <Link key={o.v} href={o.href} aria-current={on ? "page" : undefined} onClick={() => elegir?.(o.v)} className={c}>
+              {o.txt}
+            </Link>
+          );
+        })}
+      </nav>
+    );
+  }
+
   return (
-    <div role="tablist" aria-label={etiqueta} className={`flex rounded-[10px] bg-hundida p-[3px] ${className}`}>
+    <div role="tablist" aria-label={etiqueta} className={caja}>
       {opciones.map((o) => {
         const on = o.v === valor;
         return (
@@ -171,15 +204,44 @@ export function Segmentado<T extends string>({
             role="tab"
             aria-selected={on}
             disabled={o.disabled}
-            onClick={() => !o.disabled && elegir(o.v)}
-            className={`${h} cursor-pointer whitespace-nowrap rounded-[8px] font-medium disabled:cursor-default disabled:opacity-45 ${
-              ancho === "igual" ? "flex-1" : alto === 34 ? "px-4" : "px-3"
-            } ${alto === 34 ? "text-[13.5px]" : "text-[13px]"} ${on ? `bg-tarjeta shadow-plana ${colorActivo?.(o.v) ?? "text-tinta"}` : "bg-transparent text-tinta-3"}`}
+            onClick={() => !o.disabled && elegir?.(o.v)}
+            className={clase(on, o.v)}
           >
             {o.txt}
           </button>
         );
       })}
     </div>
+  );
+}
+
+/** Interruptor suelto (sin fila): 40×24 con la misma Pista; dentro de un área tocable de 44 de alto en teléfono. */
+export function Interruptor({
+  activo,
+  onCambio,
+  etiqueta,
+  deshabilitado,
+  className = "",
+}: {
+  activo: boolean;
+  onCambio: (activo: boolean) => void;
+  /** Nombre accesible (lo que enciende). */
+  etiqueta: string;
+  deshabilitado?: boolean;
+  className?: string;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={activo}
+      aria-label={etiqueta}
+      title={etiqueta}
+      disabled={deshabilitado}
+      onClick={() => onCambio(!activo)}
+      className={`inline-flex flex-none cursor-pointer items-center rounded-pildora bg-transparent p-0 disabled:cursor-default disabled:opacity-50 max-[760px]:min-h-11 ${className}`}
+    >
+      <Pista on={activo} />
+    </button>
   );
 }

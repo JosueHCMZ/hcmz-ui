@@ -32,6 +32,12 @@ type Props = {
   urlPortal?: string;
   /** Debajo de la barra móvil (p. ej. la frescura de los datos). */
   extrasMovil?: ReactNode;
+  /** Acciones DENTRO de la barra móvil (≤ 760 px), antes del tema: botones de ícono 44×44 (BotonIcono), máximo 1–2
+   *  para que el nombre quepa en los 56 px. Por omisión la barra móvil no lleva extras. */
+  accionesMovil?: ReactNode;
+  /** true = repetir `extras` dentro de la barra móvil (cuando los extras ya son BotonIcono de 44, p. ej. un engrane de ajustes).
+   *  Si se pasa `accionesMovil`, gana `accionesMovil`. */
+  extrasEnMovil?: boolean;
   /** false = no mostrar el aviso «Solo lectura» (módulos que son de solo lectura para todos). */
   avisoSoloLectura?: boolean;
   /** Clases extra del <main> (p. ej. "flex flex-col gap-[18px]"). */
@@ -44,8 +50,9 @@ type Props = {
 /* Barra de módulo (Sistema-de-diseno-Portal-HCMZ/reglas/barra-de-modulo.md). NO cambiar medidas ni orden: la
    transición «el ícono viaja» del portal cuenta con ellas (ícono en 88,29; nombre en 130,29). La barra va FUERA
    del <main>. La sesión se maneja en el Portal: aquí solo se regresa a él. */
-export function Shell({ modulo, persona, extras, navegacion, fija, ancho = "normal", urlPortal = URL_PORTAL, textoSoloLectura = "Tu cuenta puede ver pero no cambiar nada.", extrasMovil, avisoSoloLectura = true, claseContenido = "", children }: Props) {
+export function Shell({ modulo, persona, extras, navegacion, fija, ancho = "normal", urlPortal = URL_PORTAL, textoSoloLectura = "Tu cuenta puede ver pero no cambiar nada.", extrasMovil, accionesMovil, extrasEnMovil, avisoSoloLectura = true, claseContenido = "", children }: Props) {
   const Glifo = modulo.icono ?? Circle;
+  const accionMovil = accionesMovil ?? (extrasEnMovil ? extras : null);
   const nivel = persona?.nivel ?? (persona?.puedeEditar ? "Puede editar" : "Solo lectura");
   const pedirEditar = `${urlPortal}/solicitar?modulo=${encodeURIComponent(modulo.id)}&nivel=editar`;
 
@@ -85,8 +92,9 @@ export function Shell({ modulo, persona, extras, navegacion, fija, ancho = "norm
         <header className="hidden border-b border-borde-sutil bg-tarjeta max-[760px]:block">
           <div className="flex h-14 items-center gap-2.5 pl-4 pr-1.5">
             <Monograma alto={28} />
-            <span className="whitespace-nowrap font-display text-[14.5px] font-medium text-tinta">{modulo.nombreCorto ?? modulo.nombre}</span>
+            <span className={`whitespace-nowrap font-display text-[14.5px] font-medium text-tinta ${accionMovil ? "min-w-0 truncate" : ""}`}>{modulo.nombreCorto ?? modulo.nombre}</span>
             <span className="ml-auto flex">
+              {accionMovil && <span className="flex items-center">{accionMovil}</span>}
               <BotonTema grande />
               <BotonPortal href={urlPortal} compacto />
             </span>

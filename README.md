@@ -38,6 +38,7 @@ Se borran del módulo: `app/tokens.css`, `app/fonts/`, `app/transicion-portal.ts
 - **Estilos**: tokens (piedra/tinta/estados validados para daltonismo), tema Tailwind que REEMPLAZA la paleta (un hex o color de Tailwind en una clase es un bug), fuentes locales (sin Google), scroll de WhatsApp global + utilidad `sin-barra`, impresión.
 - **Barra**: `Shell` (regla barra-de-modulo: medidas fijas por la transición «el ícono viaja»), `BotonPortal`, `DivisorCabecera`, `BotonTema`, `Monograma`.
 - **Componentes** (rediseño v4 de WhatsApp): `Boton`, `BotonIcono`, `Pista`, `FilaInterruptor`, `Segmentado`, `ChipEstado`, `Avatar`, `EtiquetaSeccion`, `Titulo`, `Tarjeta`, `TarjetaFilas`, `FilaDato`, `Nota`, `Vacio`, `Dialogo` + clases sueltas (`BTN`, `INPUT`…).
+- **0.2.0** (piezas que estaban copiadas en 3+ módulos): `NavModulo`, `EncabezadoPagina`, `Panel`, `Tabla` (+ `TH`/`TD`/`TR`), `Kpi`, `Aviso`, `CampoBusqueda`, `Interruptor`, `BotonCopiar`, `ToastProvider`/`useToast`, `Esqueleto`/`FilaEsqueleto`, `Modal`, `Hace`/`Frescura`/`useAhora` + `hace()`/`duracion()`, `CLASES_TONO`; `@j3ehcmz/ui/texto` (`sinAcentos`, `normalizar`, `iniciales`). Qué reemplaza a qué copia local: `MIGRAR.md` §6. Cambios: `CHANGELOG.md`.
 - **Navegador**: `ScriptsCabecera` (tema compartido por cookie + transición, idéntica al maestro del portal), `ReportarErrores`.
 
 - **Tokens extra** (ronda 4–6): Nómina (`nomina`, `[data-modulo="nomina"]`), vínculo «En Nómina» (`vinculo`), marca del membrete (`marca-*`, fijos en los dos temas) y `font-marca` (Josefin Sans local, solo membrete).
@@ -46,6 +47,15 @@ Se borran del módulo: `app/tokens.css`, `app/fonts/`, `app/transicion-portal.ts
 Íconos: se pasan como componente de lucide-react importado por nombre (`icono={Plus}`). El registro completo del portal (319, con alias como `starlink` → `satellite-dish`) está aparte en `@j3ehcmz/ui/iconos`, para usar solo donde los nombres vienen de datos.
 
 Pendiente de portar cuando se migre cada módulo (están en Claude Design, `CAMBIOS-PAQUETE.md`): componentes del portal (BarraPortal con container queries, BuscadorRapido, MenuPerfil, Insignia, TarjetaModulo…) y los de Nómina/Resultados (HojaNomina con membrete, FranjaNomina, TablaOrdenes…).
+
+## Desarrollo del paquete
+
+```bash
+bun run tipos     # tsc del paquete y del catálogo (demo/)
+bun test tests    # pruebas de las utilidades puras
+```
+
+`demo/Catalogo.tsx` muestra todas las piezas (no se publica). Para verlo, cópialo a `app/catalogo/page.tsx` de un módulo.
 
 ## Rendimiento
 

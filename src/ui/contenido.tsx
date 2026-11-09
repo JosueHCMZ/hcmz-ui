@@ -1,5 +1,6 @@
-import { CircleAlert, CircleCheck, CircleDashed, OctagonAlert, TriangleAlert, type LucideIcon } from "lucide-react";
+import { CircleAlert, CircleCheck, CircleDashed, CloudOff, Inbox, OctagonAlert, SearchX, TriangleAlert, type LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import { GlifoIcono, type IconoProp } from "../iconos/glifos";
 
 export type Tono = "aldia" | "porvencer" | "fallo" | "suspendido" | "sindatos";
 
@@ -13,13 +14,56 @@ const TONO: Record<Tono, { chip: string; icono: string; glifo: LucideIcon }> = {
   sindatos: { chip: "bg-sindatos-bg text-sindatos-tinta", icono: "text-sindatos", glifo: CircleDashed },
 };
 
-/** `icono` por omisión = el del estado; `icono={null}` lo quita. */
-export function ChipEstado({ tono, icono, children }: { tono: Tono; icono?: LucideIcon | null; children: ReactNode }) {
+/** Fondo + tinta de texto de cada estado (chips, avisos, celdas). Para el ícono del estado, `text-<tono>`. */
+export const CLASES_TONO: Record<Tono, string> = {
+  aldia: TONO.aldia.chip,
+  porvencer: TONO.porvencer.chip,
+  fallo: TONO.fallo.chip,
+  suspendido: TONO.suspendido.chip,
+  sindatos: TONO.sindatos.chip,
+};
+
+/** Color «hex» validado del estado, para el ícono (`text-aldia`…). */
+export const COLOR_TONO: Record<Tono, string> = {
+  aldia: TONO.aldia.icono,
+  porvencer: TONO.porvencer.icono,
+  fallo: TONO.fallo.icono,
+  suspendido: TONO.suspendido.icono,
+  sindatos: TONO.sindatos.icono,
+};
+
+/** Glifo reservado de cada estado. */
+export const GLIFO_TONO: Record<Tono, LucideIcon> = {
+  aldia: TONO.aldia.glifo,
+  porvencer: TONO.porvencer.glifo,
+  fallo: TONO.fallo.glifo,
+  suspendido: TONO.suspendido.glifo,
+  sindatos: TONO.sindatos.glifo,
+};
+
+/** `icono` por omisión = el del estado; `icono={null}` lo quita. Acepta componente, elemento o nombre del juego base.
+ *  `tamano="chica"` = 20 px de alto (dentro de tablas y filas densas). */
+export function ChipEstado({
+  tono,
+  icono,
+  tamano = "normal",
+  className = "",
+  children,
+}: {
+  tono: Tono;
+  icono?: IconoProp | null;
+  tamano?: "normal" | "chica";
+  className?: string;
+  children: ReactNode;
+}) {
   const t = TONO[tono];
-  const Glifo = icono === undefined ? t.glifo : icono;
+  const glifo = icono === undefined ? t.glifo : icono;
+  const chica = tamano === "chica";
   return (
-    <span className={`inline-flex h-6 items-center gap-[5px] whitespace-nowrap rounded-pildora px-[10px] text-[12.5px] font-medium ${t.chip}`}>
-      {Glifo && <Glifo width={14} height={14} strokeWidth={1.75} aria-hidden="true" className={t.icono} />}
+    <span
+      className={`inline-flex items-center whitespace-nowrap rounded-pildora font-medium ${chica ? "h-5 gap-1 px-2 text-mini" : "h-6 gap-[5px] px-[10px] text-[12.5px]"} ${t.chip} ${className}`}
+    >
+      {glifo && <GlifoIcono icono={glifo} tamano={chica ? 12 : 14} className={t.icono} />}
       {children}
     </span>
   );
@@ -70,17 +114,52 @@ export function Nota({ children, className = "" }: { children: ReactNode; classN
   return <p className={`m-0 text-[13px] leading-[1.5] text-tinta-3 ${className}`}>{children}</p>;
 }
 
-/** Estado vacío: ícono, una línea de qué pasa y (opcional) qué hacer. */
-export function Vacio({ icono: Glifo, titulo, children }: { icono?: LucideIcon; titulo: string; children?: ReactNode }) {
+type TipoVacio = "vacio" | "sin-datos" | "caido" | "sin-coincidencias";
+
+const ICONO_VACIO: Record<TipoVacio, LucideIcon> = {
+  vacio: Inbox,
+  "sin-datos": CircleDashed,
+  caido: CloudOff,
+  "sin-coincidencias": SearchX,
+};
+
+/** Estado vacío: ícono, una línea de qué pasa y (opcional) qué hacer.
+ *  - `tipo` pone el ícono por omisión (vacío, sin datos de la fuente, servicio caído, búsqueda sin resultados);
+ *    «caido» pinta el ícono en rojo y se anuncia (role="alert").
+ *  - `accion`: botón o enlace de qué hacer («Agregar la primera», «Quitar filtros», «Reintentar»).
+ *  - `marco`: caja con borde (cuando el vacío va suelto en la página y no dentro de una tarjeta). */
+export function Vacio({
+  icono,
+  titulo,
+  tipo,
+  accion,
+  marco,
+  className = "",
+  children,
+}: {
+  icono?: IconoProp;
+  titulo: string;
+  tipo?: TipoVacio;
+  accion?: ReactNode;
+  marco?: boolean;
+  className?: string;
+  children?: ReactNode;
+}) {
+  const glifo = icono ?? (tipo ? ICONO_VACIO[tipo] : undefined);
+  const caido = tipo === "caido";
   return (
-    <div className="flex flex-col items-center gap-2 px-6 py-12 text-center">
-      {Glifo && (
-        <span className="mb-1 flex size-10 items-center justify-center rounded-full bg-hundida text-tinta-3">
-          <Glifo width={18} height={18} strokeWidth={1.75} aria-hidden="true" />
+    <div
+      role={caido ? "alert" : undefined}
+      className={`flex flex-col items-center gap-2 px-6 py-12 text-center ${marco ? "rounded-tarjeta border border-borde-sutil bg-tarjeta shadow-plana" : ""} ${className}`}
+    >
+      {glifo && (
+        <span className={`mb-1 flex size-10 items-center justify-center rounded-full ${caido ? "bg-fallo-bg text-fallo" : "bg-hundida text-tinta-3"}`}>
+          <GlifoIcono icono={glifo} tamano={18} />
         </span>
       )}
       <span className="font-display text-titulo-tarjeta font-medium text-tinta">{titulo}</span>
       {children && <div className="max-w-[420px] text-ui text-tinta-3">{children}</div>}
+      {accion && <div className="mt-2 flex flex-wrap items-center justify-center gap-2">{accion}</div>}
     </div>
   );
 }
